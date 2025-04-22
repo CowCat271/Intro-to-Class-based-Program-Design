@@ -97,7 +97,7 @@ class MyGame extends World {
   MyGame spawnShips() {
     if (this.gameInfo.currentTick % this.gameInfo.freq == 0) { // ever 1s
 
-      for (int i = 0; i < this.gameInfo.rand.nextInt(3); i++) {
+      for (int i = 0; i < this.gameInfo.rand.nextInt(this.gameInfo.randomShips); i++) {
         this.gameInfo = this.gameInfo.addShip(this.gameInfo.randomShip());
       }
 
@@ -167,8 +167,8 @@ class MyGame extends World {
 
 class ExamplesMyWorldProgram {
   boolean testBigBang(Tester t) {
-    int width = 1500;
-    int height = 900;
+    int width = 1000;
+    int height = 600;
     int bullets = 11;
     double tickRate = 1.0 / 30.0;
 

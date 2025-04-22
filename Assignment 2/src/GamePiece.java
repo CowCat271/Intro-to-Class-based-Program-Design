@@ -1,6 +1,32 @@
 import javalib.funworld.WorldScene;
 import javalib.worldimages.WorldImage;
 
+interface IGamePiece {
+  int getX();
+
+  int getY();
+
+  int getGen();
+  
+  MyPosn getPosn();
+
+  MyPosn getV();
+
+  int getRadius();
+
+  boolean same(IGamePiece other);
+
+  boolean isOffScreen(int screenWidth, int screenHeight);
+
+  boolean collidesWith(IGamePiece other);
+
+  WorldScene place(WorldScene scene);
+
+  WorldImage draw();
+
+  IGamePiece move();
+}
+
 abstract class AGamePiece implements IGamePiece {
   MyPosn p;
   MyPosn v;
@@ -25,10 +51,6 @@ abstract class AGamePiece implements IGamePiece {
   public int getRadius() {
     return this.radius;
   }
-  
-  public int getGen() {
-    return 0;
-  }
 
   public boolean same(IGamePiece other) {
     return this.p.same(other.getPosn()) && this.v.same(other.getV());
@@ -52,4 +74,7 @@ abstract class AGamePiece implements IGamePiece {
   public abstract WorldImage draw();
 
   public abstract IGamePiece move();
+
 }
+
+

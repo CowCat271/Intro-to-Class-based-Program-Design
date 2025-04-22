@@ -22,6 +22,10 @@ class Ship extends AGamePiece {
     this.radius = screenHeight / 30;
   }
 
+  public int getGen() {
+    throw new IllegalAccessError("getGen shouldn't be called for a Ship.");
+  }
+
   @Override
   public WorldImage draw() {
     return new CircleImage(this.radius, "solid", Color.CYAN);

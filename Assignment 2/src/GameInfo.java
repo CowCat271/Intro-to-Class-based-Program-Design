@@ -17,15 +17,16 @@ class GameInfo {
   ILoGamePiece lob;
 
   boolean debug;
+  int randomShips;
   Random rand;
 
   GameInfo(int width, int height, double tick, int bullets) {
-    this(width, height, false, tick, 0, bullets, 0, new MtLoGamePiece(), new MtLoGamePiece(), false,
+    this(width, height, false, tick, 0, bullets, 0, new MtLoGamePiece(), new MtLoGamePiece(), false, 3,
         new Random());
   }
 
   GameInfo(int width, int height, boolean begin, double tick, int currentTick, int bullets,
-      int score, ILoGamePiece los, ILoGamePiece lob, boolean debug, Random rand) {
+      int score, ILoGamePiece los, ILoGamePiece lob, boolean debug, int randomShips, Random rand) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("dimentions of the game should be positive");
     }
@@ -47,6 +48,7 @@ class GameInfo {
 
     this.debug = debug;
 
+    this.randomShips = randomShips;
     this.rand = rand;
   }
 
@@ -109,6 +111,11 @@ class GameInfo {
     return this;
   }
 
+  GameInfo setRandomShips(int randomShips) {
+    this.randomShips = randomShips;
+    
+    return this;
+  }
   GameInfo setRand(Random rand) {
     this.rand = rand;
 

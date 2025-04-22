@@ -30,10 +30,11 @@ class Bullet extends AGamePiece {
     this.radius = (gen < 4) ? ((gen * screenHeight / 900) + screenHeight / 150) : screenHeight / 90;
   }
 
-  @Override
   public int getGen() {
     return this.gen;
   }
+  
+
   @Override
   public WorldImage draw() {
     return new CircleImage(this.radius, "solid", Color.PINK);
