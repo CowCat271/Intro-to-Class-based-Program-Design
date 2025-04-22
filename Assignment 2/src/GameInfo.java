@@ -13,19 +13,19 @@ class GameInfo {
   int bullets;
   int score;
 
-  ILoShip los;
-  ILoBullet lob;
+  ILoGamePiece los;
+  ILoGamePiece lob;
 
   boolean debug;
   Random rand;
 
   GameInfo(int width, int height, double tick, int bullets) {
-    this(width, height, false, tick, 0, bullets, 0, new MtLoShip(), new MtLoBullet(), false,
+    this(width, height, false, tick, 0, bullets, 0, new MtLoGamePiece(), new MtLoGamePiece(), false,
         new Random());
   }
 
   GameInfo(int width, int height, boolean begin, double tick, int currentTick, int bullets,
-      int score, ILoShip los, ILoBullet lob, boolean debug, Random rand) {
+      int score, ILoGamePiece los, ILoGamePiece lob, boolean debug, Random rand) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("dimentions of the game should be positive");
     }
@@ -56,12 +56,6 @@ class GameInfo {
     return this;
   }
 
-  GameInfo setBullets(int bullets) {
-    this.bullets = bullets;
-
-    return this;
-  }
-
   Ship randomShip() {
     int dir = this.rand.nextInt(2); // 0 => left | 1 => right
     return new Ship(
@@ -70,7 +64,7 @@ class GameInfo {
   }
 
   GameInfo addShip(Ship s) {
-    this.los = new ConsLoShip(s, this.los);
+    this.los = new ConsLoGamePiece(s, this.los);
 
     return this;
   }
@@ -81,8 +75,8 @@ class GameInfo {
     return this;
   }
 
-  ILoShip getCollidedShips() {
-    return this.los.collidesWithAnyBullet(this.lob);
+  ILoGamePiece getCollidedShips() {
+    return this.los.collidesWithAnyOtherGamePiece(this.lob);
   }
 
   Bullet createBullet(MyPosn p, int gen, int i) {
@@ -90,7 +84,7 @@ class GameInfo {
   }
 
   GameInfo addBullet(Bullet b) {
-    this.lob = new ConsLoBullet(b, this.lob);
+    this.lob = new ConsLoGamePiece(b, this.lob);
 
     return this;
   }
@@ -101,11 +95,11 @@ class GameInfo {
     return this;
   }
 
-  ILoBullet getCollidedBullets() {
-    return this.lob.collidesWithAnyShip(this.los);
+  ILoGamePiece getCollidedBullets() {
+    return this.lob.collidesWithAnyOtherGamePiece(this.los);
   }
 
-  ILoBullet spawnBullets(ILoBullet collidedBullets) {
+  ILoGamePiece spawnBullets(ILoGamePiece collidedBullets) {
     return collidedBullets.nextGen(this.lob, this.HEIGHT);
   }
 

@@ -1,7 +1,14 @@
-import tester.Tester;
-import javalib.worldimages.*;
-import javalib.funworld.*;
 import java.awt.Color;
+
+import javalib.funworld.World;
+import javalib.funworld.WorldScene;
+import javalib.worldimages.AboveImage;
+import javalib.worldimages.EquilateralTriangleImage;
+import javalib.worldimages.RectangleImage;
+import javalib.worldimages.TextImage;
+import javalib.worldimages.WorldEnd;
+import javalib.worldimages.WorldImage;
+import tester.Tester;
 
 class MyGame extends World {
   GameInfo gameInfo;
@@ -109,11 +116,11 @@ class MyGame extends World {
   }
 
   MyGame handleCollisions() {
-    ILoShip collidedShips = this.gameInfo.getCollidedShips();
-    ILoBullet collidedBullets = this.gameInfo.getCollidedBullets();
+    ILoGamePiece collidedShips = this.gameInfo.getCollidedShips();
+    ILoGamePiece collidedBullets = this.gameInfo.getCollidedBullets();
 
-    this.gameInfo.los = this.gameInfo.los.removeShips(collidedShips);
-    this.gameInfo.lob = this.gameInfo.lob.removeBullets(collidedBullets);
+    this.gameInfo.los = this.gameInfo.los.removeGamePiece(collidedShips);
+    this.gameInfo.lob = this.gameInfo.lob.removeGamePiece(collidedBullets);
 
     this.gameInfo.score += collidedShips.length(0);
     this.gameInfo.lob = this.gameInfo.spawnBullets(collidedBullets);
@@ -121,8 +128,9 @@ class MyGame extends World {
     return this;
   }
 
+  @Override
   public MyGame onKeyEvent(String key) {
-    if (!key.equals(" ")) {
+    if (!key.equals(" ") || this.gameInfo.bullets == 0) {
       return this;
     }
 
@@ -137,7 +145,7 @@ class MyGame extends World {
 
   @Override
   public WorldEnd worldEnds() {
-    if (this.gameInfo.bullets == 0) {
+    if (this.gameInfo.lob.length(0) == 0 && this.gameInfo.bullets == 0) {
       return new WorldEnd(true, this.makeEndScene());
     }
     else {
@@ -164,19 +172,9 @@ class ExamplesMyWorldProgram {
     int bullets = 11;
     double tickRate = 1.0 / 30.0;
 
-//    MyPosn p1 = new MyPosn(100, 100);
-////    MyPosn p2 = new MyPosn(150, 100);
-////    MyPosn p3 = new MyPosn(100, 150);
-//    MyPosn p4 = new MyPosn(200, 200);
-//    MyPosn v1 = new MyPosn(0, 1);
-//    MyPosn v2 = new MyPosn(1, 0);
-//
-//    ILoShip los = new ConsLoShip(new Ship(p1, v1), new MtLoShip());
-//    ILoBullet lob = new ConsLoBullet(new Bullet(p4, v2, 4), new MtLoBullet());
-
     GameInfo gi = new GameInfo(width, height, tickRate, bullets);
-    gi.setDebug(true);
     MyGame world = new MyGame(gi);
+
     return world.bigBang(width, height, tickRate);
   }
 }

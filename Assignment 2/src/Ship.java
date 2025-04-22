@@ -22,11 +22,13 @@ class Ship extends AGamePiece {
     this.radius = screenHeight / 30;
   }
 
-  WorldImage draw() {
+  @Override
+  public WorldImage draw() {
     return new CircleImage(this.radius, "solid", Color.CYAN);
   }
 
-  Ship move() {
+  @Override
+  public IGamePiece move() {
     return new Ship(this.p.add(this.v), this.v, this.radius);
   }
 }

@@ -12,7 +12,7 @@ class MyPosn extends Posn {
   MyPosn add(MyPosn that) {
     return new MyPosn(this.x + that.x, this.y + that.y);
   }
-  
+
   boolean same(MyPosn other) {
     return this.x == other.x && this.y == other.y;
   }
