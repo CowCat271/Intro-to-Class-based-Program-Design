@@ -1,29 +1,30 @@
 import java.util.ArrayList;
+
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 class Utils {
-  <T> ArrayList<T> filter(ArrayList<T> arr, Predicate<T> pred) {
-    ArrayList<T> result = new ArrayList<T>();
 
-    for (T item : arr) {
-      if (pred.test(item)) {
-        result.add(item);
+  ArrayList<ArrayList<Integer>> initSolution() {
+    ArrayList<ArrayList<Integer>> solution = new ArrayList<ArrayList<Integer>>();
+    for (int i = 0; i < 4; ++i) {
+      ArrayList<Integer> row = new ArrayList<Integer>();
+      for (int j = 1; j <= 4; ++j) {
+        row.add(i * 4 + j);
       }
+      if (i == 3) {
+        row.set(3, 0);
+      }
+      solution.add(row);
     }
 
-    return result;
+    return solution;
   }
 
-  // remove everything except what pass the predicate
-  <T> void removeExcept(ArrayList<T> arr, Predicate<T> pred) {
-    int i = 0;
-
-    while (i < arr.size()) {
-      if (pred.test(arr.get(i))) {
-        ++i;
-      }
-      else {
-        arr.remove(i);
+  <T, R> void update2DArray(ArrayList<ArrayList<T>> arr, UnaryOperator<T> func) {
+    for (int i = 0; i < arr.size(); ++i) {
+      for (int j = 0; j < arr.get(i).size(); ++j) {
+        arr.get(i).set(j, func.apply(arr.get(i).get(j)));
       }
     }
   }
