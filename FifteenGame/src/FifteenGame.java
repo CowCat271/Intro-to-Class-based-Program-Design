@@ -18,6 +18,7 @@ class FifteenGame extends World {
 
   ArrayList<ArrayList<Tile>> grid;
   ArrayList<ArrayList<Integer>> solution;
+  ArrayList<String> history;
 
   FifteenGame(int width, int height, boolean debug) {
     this(width, height, false, debug, new PuzzleGenerator2D().generateSolvablePuzzle2D(debug));
@@ -38,6 +39,7 @@ class FifteenGame extends World {
 
     this.grid = grid;
     this.solution = utils.initSolution();
+    this.history = new ArrayList<String>();
 
     this.utils.update2DArray(this.grid, new AddSideLenTile());
   }
@@ -85,20 +87,40 @@ class FifteenGame extends World {
   }
 
   public void onKeyEvent(String key) {
-    if (key.equals("up")) {
-      this.move(1, 0);
-    }
-    else if (key.equals("down")) {
-      this.move(-1, 0);
-    }
-    else if (key.equals("right")) {
-      this.move(0, -1);
-    }
-    else if (key.equals("left")) {
-      this.move(0, 1);
+    this.takeMove(key, true);
+  }
+
+  void takeMove(String key, boolean save) {
+    if (key.equals("u")) {
+      if (this.history.isEmpty())
+        return;
+
+      this.takeMove(this.history.remove(this.history.size() - 1), false);
+      return;
     }
 
-    if (this.isSolved()) {
+    if (key.equals("up")) {
+      if (save)
+        this.history.add("down");
+      this.moveDown();
+    }
+    else if (key.equals("down")) {
+      if (save)
+        this.history.add("up");
+      this.moveUp();
+    }
+    else if (key.equals("right")) {
+      if (save)
+        this.history.add("left");
+      this.moveLeft();
+    }
+    else if (key.equals("left")) {
+      if (save)
+        this.history.add("right");
+      this.moveRight();
+    }
+
+    if (save && this.isSolved()) {
       for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
           this.grid.get(i).get(j).color = Color.GREEN;
@@ -107,6 +129,22 @@ class FifteenGame extends World {
 
       this.endOfWorld("Puzzil Solved");
     }
+  }
+
+  void moveDown() {
+    this.move(1, 0);
+  }
+
+  void moveUp() {
+    this.move(-1, 0);
+  }
+
+  void moveRight() {
+    this.move(0, 1);
+  }
+
+  void moveLeft() {
+    this.move(0, -1);
   }
 
   void move(int x, int y) {
