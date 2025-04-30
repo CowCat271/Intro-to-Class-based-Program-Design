@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 class Utils {
